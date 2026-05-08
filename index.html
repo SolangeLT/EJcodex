@@ -31,7 +31,7 @@
           <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
             <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
             <li class="nav-item"><a class="nav-link" href="#historial">Mis rentas/compras</a></li>
-            <li class="nav-item"><a class="nav-link" href="#gestor">Gestor</a></li>
+            <li class="nav-item"><a class="nav-link" href="gestor.html" target="_blank" rel="noopener">Gestor</a></li>
             <li class="nav-item">
               <button id="themeToggle" class="btn btn-sm btn-light" type="button" aria-label="Cambiar tema">
                 🌙 Modo oscuro
@@ -118,74 +118,6 @@
         </div>
       </section>
 
-      <section id="gestor" class="mt-5">
-        <h2 class="h4 mb-3">Gestor de la aplicación</h2>
-        <div class="row g-4">
-          <div class="col-lg-7">
-            <div class="card">
-              <div class="card-body">
-                <h3 class="h5">Dar de alta nuevo libro</h3>
-                <form id="adminForm" class="row g-3">
-                  <div class="col-md-6">
-                    <label for="adminTitle" class="form-label">Título</label>
-                    <input id="adminTitle" name="title" class="form-control" type="text" required />
-                  </div>
-                  <div class="col-md-6">
-                    <label for="adminAuthor" class="form-label">Autor</label>
-                    <input id="adminAuthor" name="author" class="form-control" type="text" required />
-                  </div>
-                  <div class="col-md-4">
-                    <label for="adminCategory" class="form-label">Categoría</label>
-                    <select id="adminCategory" name="category" class="form-select" required>
-                      <option value="novela">Novela</option>
-                      <option value="programacion">Programación</option>
-                      <option value="historia">Historia</option>
-                    </select>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="adminPurchasePrice" class="form-label">Precio compra</label>
-                    <input id="adminPurchasePrice" name="purchasePrice" class="form-control" type="number" min="0" step="0.01" required />
-                  </div>
-                  <div class="col-md-4">
-                    <label for="adminRentalPrice" class="form-label">Precio renta</label>
-                    <input id="adminRentalPrice" name="rentalPrice" class="form-control" type="number" min="0" step="0.01" required />
-                  </div>
-                  <div class="col-md-4">
-                    <label for="adminRentalDays" class="form-label">Días de renta</label>
-                    <input id="adminRentalDays" name="rentalDays" class="form-control" type="number" min="1" step="1" required />
-                  </div>
-                  <div class="col-md-8">
-                    <label for="adminImage" class="form-label">URL de portada (opcional)</label>
-                    <input id="adminImage" name="image" class="form-control" type="url" placeholder="https://..." />
-                  </div>
-                  <div class="col-12">
-                    <label for="adminDescription" class="form-label">Descripción</label>
-                    <textarea id="adminDescription" name="description" class="form-control" rows="3" required></textarea>
-                  </div>
-                  <div class="col-12">
-                    <button class="btn btn-success" type="submit">Dar de alta libro</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-5">
-            <div class="card">
-              <div class="card-body">
-                <h3 class="h5">Dar de baja libro</h3>
-                <form id="adminDeleteForm" class="d-grid gap-3">
-                  <div>
-                    <label for="adminBookSelect" class="form-label">Libro disponible</label>
-                    <select id="adminBookSelect" class="form-select"></select>
-                  </div>
-                  <button class="btn btn-outline-danger" type="submit">Dar de baja</button>
-                </form>
-                <div id="adminFeedback" class="alert d-none mt-3 mb-0" role="alert"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
     </main>
 
