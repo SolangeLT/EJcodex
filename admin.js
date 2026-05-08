@@ -1,5 +1,48 @@
 const STORAGE_KEY = "biblioapp_books";
-const books = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+const defaultBooks = [
+  {
+    id: 1,
+    title: "Cien años de soledad",
+    author: "Gabriel García Márquez",
+    category: "novela",
+    description: "Una obra maestra del realismo mágico en Macondo.",
+    purchasePrice: 24.99,
+    rentalPrice: 5.99,
+    rentalDays: 7,
+    isAvailable: true,
+    availableDate: null,
+    image: "https://placehold.co/600x800?text=Cien+años"
+  },
+  {
+    id: 2,
+    title: "Clean Code",
+    author: "Robert C. Martin",
+    category: "programacion",
+    description: "Buenas prácticas para escribir código limpio.",
+    purchasePrice: 34.99,
+    rentalPrice: 8.99,
+    rentalDays: 10,
+    isAvailable: false,
+    availableDate: "2026-05-20",
+    image: "https://placehold.co/600x800?text=Clean+Code"
+  },
+  {
+    id: 3,
+    title: "Sapiens",
+    author: "Yuval Noah Harari",
+    category: "historia",
+    description: "Breve historia de la humanidad y su evolución.",
+    purchasePrice: 27.5,
+    rentalPrice: 6.5,
+    rentalDays: 7,
+    isAvailable: true,
+    availableDate: null,
+    image: "https://placehold.co/600x800?text=Sapiens"
+  }
+];
+
+const books = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || [...defaultBooks];
+localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
 
 const adminForm = document.getElementById("adminForm");
 const adminDeleteForm = document.getElementById("adminDeleteForm");
