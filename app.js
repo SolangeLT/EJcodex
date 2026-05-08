@@ -60,6 +60,13 @@ const rentBtn = document.getElementById("rentBtn");
 const notifyBtn = document.getElementById("notifyBtn");
 const themeToggle = document.getElementById("themeToggle");
 
+const adminForm = document.getElementById("adminForm");
+const adminDeleteForm = document.getElementById("adminDeleteForm");
+const adminBookSelect = document.getElementById("adminBookSelect");
+const adminFeedback = document.getElementById("adminFeedback");
+
+let selectedBookId = books[0]?.id ?? null;
+
 function applyTheme(theme) {
   const mode = theme === "dark" ? "dark" : "light";
   document.body.setAttribute("data-bs-theme", mode);
@@ -77,6 +84,22 @@ function currency(value) {
 }
 
 function paintDetail(book) {
+  if (!book) {
+    detailTitle.textContent = "Sin libros disponibles";
+    detailAuthor.textContent = "";
+    detailDescription.textContent = "Agrega un libro desde el Gestor para verlo aquí.";
+    detailPurchase.textContent = "—";
+    detailRental.textContent = "—";
+    detailImage.src = "https://placehold.co/600x800?text=Sin+libros";
+    detailBadge.className = "badge text-bg-secondary mb-2";
+    detailBadge.textContent = "Sin catálogo";
+    releaseDate.classList.add("d-none");
+    notifyBtn.classList.add("d-none");
+    buyBtn.disabled = true;
+    rentBtn.disabled = true;
+    return;
+  }
+
   detailTitle.textContent = book.title;
   detailAuthor.textContent = `Autor: ${book.author}`;
   detailDescription.textContent = book.description;
@@ -129,6 +152,7 @@ function createCard(book) {
   `;
 
   col.addEventListener("click", () => {
+    selectedBookId = book.id;
     paintDetail(book);
     document.getElementById("detalle").scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -154,6 +178,48 @@ function filterBooks() {
   });
 }
 
+function updateAdminBookOptions() {
+  adminBookSelect.innerHTML = "";
+
+  if (!books.length) {
+    adminBookSelect.innerHTML = '<option value="">No hay libros para dar de baja</option>';
+    adminBookSelect.disabled = true;
+    return;
+  }
+
+  adminBookSelect.disabled = false;
+
+  books.forEach((book) => {
+    const option = document.createElement("option");
+    option.value = String(book.id);
+    option.textContent = `${book.title} — ${book.author}`;
+    adminBookSelect.appendChild(option);
+  });
+}
+
+function syncSelectedBookAfterMutations() {
+  if (!books.length) {
+    selectedBookId = null;
+    paintDetail(null);
+    return;
+  }
+
+  const stillExists = books.some((book) => book.id === selectedBookId);
+
+  if (!stillExists) {
+    selectedBookId = books[0].id;
+  }
+
+  const selectedBook = books.find((book) => book.id === selectedBookId);
+  paintDetail(selectedBook);
+}
+
+function showAdminFeedback(message, type = "success") {
+  adminFeedback.className = `alert alert-${type} mt-3 mb-0`;
+  adminFeedback.textContent = message;
+  adminFeedback.classList.remove("d-none");
+}
+
 function renderBooks() {
   loader.classList.remove("d-none");
 
@@ -176,6 +242,62 @@ searchInput.addEventListener("input", renderBooks);
 categoryFilter.addEventListener("change", renderBooks);
 availabilityFilter.addEventListener("change", renderBooks);
 
+adminForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(adminForm);
+  const title = String(formData.get("title") || "").trim();
+  const author = String(formData.get("author") || "").trim();
+  const category = String(formData.get("category") || "").trim();
+  const purchasePrice = Number(formData.get("purchasePrice"));
+  const rentalPrice = Number(formData.get("rentalPrice"));
+  const rentalDays = Number(formData.get("rentalDays"));
+  const description = String(formData.get("description") || "").trim();
+  const image = String(formData.get("image") || "").trim() || "https://placehold.co/600x800?text=Nuevo+Libro";
+
+  const nextId = books.length ? Math.max(...books.map((book) => book.id)) + 1 : 1;
+
+  books.push({
+    id: nextId,
+    title,
+    author,
+    category,
+    description,
+    purchasePrice,
+    rentalPrice,
+    rentalDays,
+    isAvailable: true,
+    availableDate: null,
+    image
+  });
+
+  selectedBookId = nextId;
+
+  adminForm.reset();
+  updateAdminBookOptions();
+  renderBooks();
+  syncSelectedBookAfterMutations();
+  showAdminFeedback("Libro dado de alta correctamente.");
+});
+
+adminDeleteForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const idToDelete = Number(adminBookSelect.value);
+  const bookIndex = books.findIndex((book) => book.id === idToDelete);
+
+  if (bookIndex === -1) {
+    showAdminFeedback("No se encontró el libro a dar de baja.", "warning");
+    return;
+  }
+
+  const [removedBook] = books.splice(bookIndex, 1);
+  updateAdminBookOptions();
+  renderBooks();
+  syncSelectedBookAfterMutations();
+  showAdminFeedback(`Libro dado de baja: ${removedBook.title}.`, "info");
+});
+
 notifyBtn.addEventListener("click", () => {
   alert("Te notificaremos cuando el libro se libere.");
 });
@@ -187,5 +309,6 @@ themeToggle.addEventListener("click", () => {
 });
 
 initTheme();
-paintDetail(books[0]);
+updateAdminBookOptions();
+syncSelectedBookAfterMutations();
 renderBooks();
