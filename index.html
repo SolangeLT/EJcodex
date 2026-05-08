@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-bs-theme="light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
       <div class="container">
         <a class="navbar-brand fw-bold" href="#">📚 BiblioApp</a>
@@ -28,9 +28,14 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
             <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
             <li class="nav-item"><a class="nav-link" href="#historial">Mis rentas/compras</a></li>
+            <li class="nav-item">
+              <button id="themeToggle" class="btn btn-sm btn-light" type="button" aria-label="Cambiar tema">
+                🌙 Modo oscuro
+              </button>
+            </li>
           </ul>
         </div>
       </div>

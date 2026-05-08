@@ -58,6 +58,19 @@ const detailImage = document.getElementById("detailImage");
 const buyBtn = document.getElementById("buyBtn");
 const rentBtn = document.getElementById("rentBtn");
 const notifyBtn = document.getElementById("notifyBtn");
+const themeToggle = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+  const mode = theme === "dark" ? "dark" : "light";
+  document.body.setAttribute("data-bs-theme", mode);
+  themeToggle.textContent = mode === "dark" ? "☀️ Modo claro" : "🌙 Modo oscuro";
+}
+
+function initTheme() {
+  const storedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(storedTheme || (prefersDark ? "dark" : "light"));
+}
 
 function currency(value) {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "USD" }).format(value);
@@ -167,5 +180,12 @@ notifyBtn.addEventListener("click", () => {
   alert("Te notificaremos cuando el libro se libere.");
 });
 
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+  applyTheme(nextTheme);
+  localStorage.setItem("theme", nextTheme);
+});
+
+initTheme();
 paintDetail(books[0]);
 renderBooks();

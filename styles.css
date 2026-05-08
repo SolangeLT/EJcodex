@@ -1,5 +1,17 @@
 body {
   background: #f8f9fb;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body[data-bs-theme="dark"] {
+  background: #121417;
+}
+
+body[data-bs-theme="dark"] .book-card .card,
+body[data-bs-theme="dark"] #detalle .card,
+body[data-bs-theme="dark"] #historial .card {
+  background-color: #1c2128;
+  border-color: #2f353d;
 }
 
 .book-cover {
